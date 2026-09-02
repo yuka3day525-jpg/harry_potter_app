@@ -1,0 +1,969 @@
+
+/* =========================
+   共通設定
+========================= */
+@charset "utf-8";
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+}
+
+
+/* =========================
+   トップページ
+========================= */
+header {
+    /* background-color: beige; */
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+    /* 魔法っぽい暗めの背景 */
+.top-page {
+    background:
+        radial-gradient(
+            circle at 50% 40%,
+            #2d2450 0%,
+            #17142b 45%,
+            #0c0b18 100%
+        );
+
+    color: #f5f0ff;
+
+    font-family:
+        "Yu Gothic",
+        "Hiragino Kaku Gothic ProN",
+        sans-serif;
+}
+
+
+/* =========================
+   中央配置
+========================= */
+
+.top-container {
+    height: 90vh;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    padding: 30px;
+}
+
+
+/* =========================
+   メインカード
+========================= */
+
+.welcome-card {
+    width: min(1000px, 90vw);
+    height: min(800px, 80vh);
+
+    padding: 60px 90px;
+
+    text-align: center;
+
+    /* background: rgba(20, 18, 40, 0.82); */
+
+    background-image: url(../images/hog.jpg);
+    background-size: cover;
+    background-attachment: fixed;
+
+    border: 1px solid rgba(220, 190, 255, 0.25);
+
+    border-radius: 24px;
+
+    box-shadow:
+        0 20px 60px rgba(0, 0, 0, 0.45),
+        0 0 40px rgba(150, 100, 255, 0.08);
+
+    backdrop-filter: blur(10px);
+}
+
+
+/* =========================
+   タイトル
+========================= */
+
+.subtitle {
+    margin: 0 0 15px;
+
+    color: #c8a8ff;
+
+    font-size: 14px;
+    letter-spacing: 3px;
+}
+
+h1 {
+    margin: 0;
+
+    font-size: 48px;
+    font-weight: 700;
+
+    letter-spacing: 4px;
+
+    color: #ffffff;
+
+    text-shadow:
+        0 0 15px rgba(190, 150, 255, 0.5);
+}
+
+.description {
+    margin: 20px 0 40px;
+
+    color: #c9c5d8;
+
+    font-size: 16px;
+    line-height: 1.8;
+}
+
+
+/* =========================
+   フォーム
+========================= */
+
+.spell-form {
+    display: flex;
+    flex-direction: column;
+
+    align-items: center;
+
+    gap: 14px;
+}
+
+.spell-form label {
+    font-size: 15px;
+
+    color: #ddd6ed;
+}
+
+.spell-form input {
+    width: 320px;
+    max-width: 100%;
+
+    padding: 14px 18px;
+
+    border: 1px solid #63577d;
+    border-radius: 10px;
+
+    background: #100e1d;
+
+    color: white;
+
+    font-size: 16px;
+
+    outline: none;
+}
+
+.spell-form input:focus {
+    border-color: #b88cff;
+
+    box-shadow:
+        0 0 0 3px rgba(184, 140, 255, 0.15);
+}
+
+.spell-form input::placeholder {
+    color: #777184;
+}
+
+
+/* =========================
+   呪文ボタン
+========================= */
+
+.spell-form button {
+    margin-top: 1px;
+
+    padding: 12px 42px;
+
+    border: none;
+    border-radius: 12px;
+
+    background: linear-gradient(
+        135deg,
+        #9b6cff,
+        #6842c5
+    );
+
+    color: white;
+
+    font-size: 17px;
+    font-weight: bold;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.2s,
+        box-shadow 0.2s;
+}
+
+.spell-form button:hover {
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 8px 25px rgba(140, 90, 255, 0.4);
+}
+
+.spell-form button:active {
+    transform: translateY(0);
+}
+
+
+/* =========================
+   履歴リンク
+========================= */
+
+.history-link {
+    display: inline-block;
+
+    margin-top: 14px;
+    padding: 8px 4px;
+
+    color: #c9aaff;
+
+    text-decoration: none;
+
+    font-size: 20px;
+    /* font-weight: 500; */
+
+    transition: color 0.2s ease;
+}
+
+.history-link:hover {
+    color: #ffffff;
+    text-decoration: underline;
+}
+
+.history-page {
+    min-height: 100vh;
+
+    background:
+        radial-gradient(
+            circle at 50% 20%,
+            #2d2450 0%,
+            #17142b 45%,
+            #0c0b18 100%
+        );
+
+    color: #f5f0ff;
+
+    font-family:
+        "Yu Gothic",
+        "Hiragino Kaku Gothic ProN",
+        sans-serif;
+}
+/* =========================
+   ページ全体 呪文が出た
+========================= */
+
+.result-page {
+    min-height: 100vh;
+
+    background:
+        radial-gradient(
+            circle at 50% 20%,
+            #2d2450 0%,
+            #17142b 45%,
+            #0c0b18 100%
+        );
+
+    color: #f5f0ff;
+
+    font-family:
+        "Yu Gothic",
+        "Hiragino Kaku Gothic ProN",
+        sans-serif;
+}
+
+
+/* =========================
+   中央配置
+========================= */
+
+.result-container {
+    width: min(900px, 90vw);
+
+    margin: 0 auto;
+
+    padding: 60px 0 80px;
+}
+
+
+/* =========================
+   結果カード
+========================= */
+
+.result-card {
+    position: relative;
+    padding: 55px 70px;
+
+    /* background: rgba(20, 18, 40, 0.88); */
+    background-image: url(../images/haikei.jpg);
+    background-size: cover;
+    background-attachment: fixed;
+
+    border: 1px solid rgba(220, 190, 255, 0.25);
+
+    border-radius: 24px;
+
+    box-shadow:
+        0 20px 60px rgba(0, 0, 0, 0.45),
+        0 0 40px rgba(150, 100, 255, 0.1);
+}
+.result-card-forbidden {
+    position: relative;
+    padding: 55px 70px;
+
+    /* background: rgba(20, 18, 40, 0.88); */
+    background-image: url(../images/1.jpg);
+    background-size: cover;
+    background-attachment: fixed;
+
+    border: 1px solid rgba(220, 190, 255, 0.25);
+
+    border-radius: 24px;
+
+    box-shadow:
+        0 20px 60px rgba(0, 0, 0, 0.45),
+        0 0 40px rgba(150, 100, 255, 0.1);
+}
+.result-card-patronus {
+    position: relative;
+    padding: 55px 70px;
+
+    /* background: rgba(20, 18, 40, 0.88); */
+    background-image: url(../images/2.jpg);
+    background-size: cover;
+    background-attachment: fixed;
+
+    border: 1px solid rgba(220, 190, 255, 0.25);
+
+    border-radius: 24px;
+
+    box-shadow:
+        0 20px 60px rgba(0, 0, 0, 0.45),
+        0 0 40px rgba(150, 100, 255, 0.1);
+}
+/* 背景画像を暗く・薄くする */
+.result-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+
+    background: rgba(10, 8, 25, 0.45);
+
+    z-index: 0;
+}
+
+/* 文字などを背景より前に出す */
+.result-card > * {
+    position: relative;
+    z-index: 1;
+}
+
+
+/* =========================
+   サブタイトル
+========================= */
+
+.subtitle {
+    margin: 0 0 15px;
+
+    text-align: center;
+
+    color: #c8a8ff;
+
+    font-size: 14px;
+
+    letter-spacing: 3px;
+}
+
+
+/* =========================
+   メインタイトル
+========================= */
+
+.result-card > h1 {
+    margin: 0 0 45px;
+
+    text-align: center;
+
+    font-size: 40px;
+
+    letter-spacing: 3px;
+
+    color: #ffffff;
+
+    text-shadow:
+        0 0 15px rgba(190, 150, 255, 0.6);
+}
+
+
+/* =========================
+   各項目
+========================= */
+
+.result-item {
+    margin-bottom: 30px;
+
+    padding-bottom: 25px;
+
+    border-bottom:
+        1px solid rgba(220, 190, 255, 0.15);
+}
+
+.result-item h2 {
+    margin: 0 0 10px;
+
+    color: #b88cff;
+
+    font-size: 18px;
+
+    letter-spacing: 1px;
+}
+
+.result-item p {
+    margin: 0;
+
+    color: #fdfcff;
+
+    font-size: 20px;
+
+    line-height: 1.8;
+}
+
+
+/* =========================
+   呪文名
+========================= */
+
+.spell-name {
+    margin-bottom: 35px;
+
+    padding: 30px;
+
+    text-align: center;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(155, 108, 255, 0.15),
+            rgba(104, 66, 197, 0.08)
+        );
+
+    border:
+        1px solid rgba(184, 140, 255, 0.35);
+
+    border-radius: 16px;
+
+    box-shadow:
+        0 0 30px rgba(140, 90, 255, 0.08);
+}
+
+.spell-name h2 {
+    margin: 0 0 10px;
+
+    color: #b88cff;
+
+    font-size: 20px;
+}
+
+.spell-name p {
+    margin: 0;
+
+    color: #ffffff;
+
+    font-size: 39px;
+
+    font-weight: bold;
+
+    letter-spacing: 3px;
+
+    text-shadow:
+        0 0 15px rgba(190, 150, 255, 0.6);
+}
+
+
+/* =========================
+   英単語
+========================= */
+
+.word-result {
+    padding: 20px;
+
+    /* background: rgba(10, 8, 25, 0.75); */
+
+    border-radius: 12px;
+
+    /* color: #f0e9ff !important; */
+
+    line-height: 2 !important;
+
+    white-space: pre-line;
+}
+
+
+/* =========================
+   保存ボタン
+========================= */
+
+.save-form {
+    text-align: center;
+
+    margin-top: 40px;
+}
+
+.save-form button {
+    padding: 16px 45px;
+
+    border: none;
+
+    border-radius: 12px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #9b6cff,
+            #6842c5
+        );
+
+    color: white;
+
+    font-size: 17px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 8px 25px rgba(140, 90, 255, 0.2);
+
+    transition:
+        transform 0.2s,
+        box-shadow 0.2s;
+}
+
+.save-form button:hover {
+    transform: translateY(-3px);
+
+    box-shadow:
+        0 12px 35px rgba(140, 90, 255, 0.5);
+}
+
+.save-form button:active {
+    transform: translateY(0);
+}
+
+
+/* =========================
+   下のリンク
+========================= */
+
+.links {
+    display: flex;
+
+    justify-content: center;
+
+    gap: 30px;
+
+    margin-top: 35px;
+}
+
+.links a {
+    color: #2f0080;
+
+    background-color: #efeff8b6;
+
+    text-decoration: none;
+
+    font-size: 18px;
+
+    transition: color 0.2s;
+}
+
+.links a:hover {
+    color: #ffffff;
+
+    text-decoration: underline;
+}
+
+/* .links a {
+    color: #c9aaff;
+
+    text-decoration: none;
+
+    font-size: 18px;
+
+    transition: color 0.2s;
+}
+
+.links a:hover {
+    color: #ffffff;
+
+    text-decoration: underline;
+}
+ */
+
+/* =========================
+   全体の配置
+========================= */
+
+.history-container {
+    width: min(1000px, 90vw);
+
+    margin: 0 auto;
+
+    /* padding: 20px 0 80px; */
+}
+
+
+/* =========================
+   タイトル
+========================= */
+
+.history-container > h1 {
+    position: relative;
+
+    margin: 0 0 40px;
+    padding: 50px;
+
+    text-align: left;
+
+    font-size: 42px;
+    letter-spacing: 4px;
+
+    color: #ffffff;
+}
+
+.history-container > h1::after {
+    content: "";
+
+    position: absolute;
+
+    right: 80px;
+    top: 30px;
+
+    width: 150px;
+    height: 200px;
+
+    background-image: url("../images/dobby.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+
+/* =========================
+   呪文カード
+========================= */
+
+.spell-card {
+    margin-bottom: 30px;
+
+    padding: 35px 45px;
+
+    background: rgba(20, 18, 40, 0.85);
+
+    border: 1px solid rgba(220, 190, 255, 0.25);
+
+    border-radius: 20px;
+
+    box-shadow:
+        0 15px 40px rgba(0, 0, 0, 0.4),
+        0 0 30px rgba(150, 100, 255, 0.08);
+}
+
+
+/* =========================
+   呪文名
+========================= */
+
+.spell-card h2 {
+    margin: 0 0 20px;
+
+    color: #c8a8ff;
+
+    font-size: 30px;
+
+    letter-spacing: 2px;
+
+    text-shadow:
+        0 0 10px rgba(180, 130, 255, 0.4);
+}
+
+
+/* =========================
+   名前・日時
+========================= */
+
+.info {
+    margin: 8px 0;
+
+    color: #c9c5d8;
+
+    font-size: 14px;
+}
+
+.info strong {
+    color: #ddd6ed;
+}
+
+
+/* =========================
+   説明・翻訳・英単語
+========================= */
+
+.spell-section {
+    margin-top: 30px;
+
+    padding-top: 20px;
+
+    border-top: 1px solid rgba(220, 190, 255, 0.15);
+}
+
+.spell-section h3 {
+    margin: 0 0 10px;
+
+    color: #b88cff;
+
+    font-size: 18px;
+
+    letter-spacing: 1px;
+}
+
+.spell-section p {
+    margin: 0;
+
+    color: #ddd8e8;
+
+    font-size: 16px;
+
+    line-height: 1.8;
+}
+
+
+/* =========================
+   英単語
+========================= */
+
+/* .word-result {
+    /* white-space: pre-line;
+
+    padding: 18px;
+
+    background: rgba(10, 8, 25, 0.7); */
+
+    /* border-radius: 10px; */
+
+    /* color: #f0e9ff !important; */
+
+    /* line-height: 2 !important; */
+*/
+
+
+/* =========================
+   保存履歴がない場合
+========================= */
+
+.empty-message {
+    padding: 50px 20px;
+
+    text-align: center;
+
+    background: rgba(20, 18, 40, 0.85);
+
+    border: 1px solid rgba(220, 190, 255, 0.2);
+
+    border-radius: 20px;
+
+    color: #c9c5d8;
+}
+
+
+/* =========================
+   戻るボタン
+========================= */
+
+.back-button {
+    display: block;
+
+    width: fit-content;
+
+    margin: 30px auto 0;
+
+    padding: 14px 35px;
+
+    border-radius: 12px;
+
+    background: linear-gradient(
+        135deg,
+        #9b6cff,
+        #6842c5
+    );
+
+    color: white;
+
+    font-size: 16px;
+    font-weight: bold;
+
+    text-decoration: none;
+
+    transition:
+        transform 0.2s,
+        box-shadow 0.2s;
+}
+
+.back-button:hover {
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 8px 25px rgba(140, 90, 255, 0.4);
+}
+
+/* トップへ戻る */
+.links_history {
+    display: flex;
+
+    justify-content: center;
+
+    gap: 30px;
+
+    margin-top: 18px;
+}
+
+.links_history a {
+    color: #c9aaff;
+
+    text-decoration: none;
+
+    font-size: 20px;
+
+    transition: color 0.2s;
+}
+
+.links_history a:hover {
+    color: #ffffff;
+
+    text-decoration: underline;
+}
+
+
+
+/* =========================
+   スマホ対応
+========================= */
+/* トップページ */
+@media (max-width: 768px) {
+
+    .top-container {
+        padding: 20px;
+    }
+
+    .welcome-card {
+        padding: 80px 25px;
+    }
+
+    h1 {
+        font-size: 34px;
+        letter-spacing: 2px;
+    }
+
+    .description {
+        font-size: 14px;
+    }
+
+    .spell-form input {
+        width: 100%;
+    }
+
+/* 履歴ページ */
+    .history-container {
+        width: 90vw;
+
+        padding: 15px 0 60px;
+    }
+
+    .history-container > h1 {
+        font-size: 32px;
+
+        letter-spacing: 2px;
+    }
+
+    .spell-card {
+        padding: 25px 20px;
+    }
+
+    .spell-card h2 {
+        font-size: 24px;
+    }
+
+    .spell-section h3 {
+        font-size: 17px;
+    }
+
+    .spell-section p {
+        font-size: 14px;
+    }
+    /* 呪文が出た画面 */
+    .result-container {
+        width: 90vw;
+
+        padding: 30px 0 50px;
+    }
+
+    .result-card {
+        padding: 40px 25px;
+    }
+
+    .result-card > h1 {
+        font-size: 30px;
+
+        letter-spacing: 1px;
+    }
+    .history-container > h1::after {
+
+        right: 45px;
+        top: 20px;
+
+        width: 150px;
+        height: 200px;
+    }
+
+    .spell-name {
+        padding: 25px 15px;
+    }
+
+    .spell-name p {
+        font-size: 28px;
+    }
+
+    .result-item p {
+        font-size: 14px;
+    }
+
+    .links {
+        flex-direction: column;
+
+        align-items: center;
+
+        gap: 15px;
+    }
+
+    .save-form button {
+        width: 100%;
+
+        padding: 15px 20px;
+    }
+}
+
+    
+
+

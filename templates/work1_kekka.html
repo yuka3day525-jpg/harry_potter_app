@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <title>呪文の結果</title>
+    <link rel="stylesheet" href="{{url_for('static',filename='css/style.css')}}">
+</head>
+
+<body class="result-page">
+    <main class="result-container">
+        {% if val[1] in ['Avada Kedavra', 'Crucio', 'Imperio'] %}
+        <section class="result-card-forbidden">
+
+        {% elif val[1] == 'Expecto patronum' %}
+        <section class="result-card-patronus">
+
+        {% else %}
+        <section class="result-card">
+        {% endif %}
+            <p class="subtitle">Harry Potter × English</p>
+            {% if spell_type in ['Avada Kedavra', 'Crucio', 'Imperio'] %}
+            <h1>許されざる呪文が出ました</h1>
+            {% elif spell_type == 'Expecto patronum' %}
+            <h1>強力な守護の呪文が出ました</h1>
+            {% else %}
+            <h1>呪文が出ました</h1>
+            {% endif %}
+            <div class="result-item">
+                <h2>名前</h2>
+                <p>{{ val[0] }}</p>
+            </div>
+
+            <div class="spell-name">
+                <h2>呪文</h2>
+                <p>{{ val[1] }}</p>
+            </div>
+
+            <div class="result-item">
+                <h2>英語の説明</h2>
+                <p>{{ val[2] }}</p>
+            </div>
+
+            <div class="result-item">
+                <h2>日本語訳</h2>
+                <p>{{ val[3] }}</p>
+            </div>
+
+            <div class="result-item">
+                <h2>単語</h2>
+                <p class="word-result" style="white-space: pre-line;">
+                {{ val[4] }}
+                </p>
+            </div>
+
+
+            <!-- DBへ保存するフォーム -->
+
+            <form
+                class="save-form"
+                action="{{ url_for('save_spell') }}"
+                method="post"
+            >
+
+                <input
+                    type="hidden"
+                    name="username"
+                    value="{{ val[0] }}"
+                >
+
+                <input
+                    type="hidden"
+                    name="spell_name"
+                    value="{{ val[1] }}"
+                >
+
+                <input
+                    type="hidden"
+                    name="description"
+                    value="{{ val[2] }}"
+                >
+
+                <input
+                    type="hidden"
+                    name="translation"
+                    value="{{ val[3] }}"
+                >
+
+                <input
+                    type="hidden"
+                    name="word_result"
+                    value="{{ val[4] }}"
+                >
+
+                <button type="submit">
+                    この呪文を保存する
+                </button>
+
+            </form>
+
+
+            <div class="links">
+
+                <a href="{{ url_for('index') }}">
+                    🪄呪文を出す
+                </a>
+
+                <a href="{{ url_for('history') }}">
+                    📖保存した履歴を見る
+                </a>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</body>
+
+</html>
+

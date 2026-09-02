@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <title>呪文の履歴</title>
+    <link rel="stylesheet" href="{{url_for('static',filename='css/style.css')}}">
+</head>
+
+<body class="history-page">
+    <main class="history-container">
+        <a class="back-button" href="{{ url_for('export_excel') }}">
+            すべての履歴をExcel形式で出力する
+        </a>
+        <div class="links_history">
+
+            <a href="{{ url_for('index') }}">
+                🪄呪文を出す
+            </a>
+
+            </div>
+        <h1>呪文の履歴</h1>
+        {% if spells %}
+            {% for spell in spells %}
+            <section class="spell-card">
+                <h2>
+                    {{ spell["spell_name"] }}
+                </h2>
+
+                <p class="info">
+                    <strong>名前：</strong>
+                    {{ spell["username"] }}
+                </p>
+
+                <p class="info">
+                    <strong>保存日時：</strong>
+                    {{ spell["created_at"] }}
+                </p>
+
+                <div class="spell-section">
+                    <h3>英語の説明</h3>
+                    <p>
+                        {{ spell["description"] }}
+                    </p>
+                </div>
+                
+                <div class="spell-section">
+                    <h3>日本語訳</h3>
+                    <p>
+                        {{ spell["translation"] }}
+                    </p>
+                </div>
+                
+                <div class="spell-section">
+                    <h3>英単語</h3>
+                    <p style="white-space: pre-line;">
+                        {{ spell["word_result"] }}
+                    </p>
+                </div>
+                <!-- これだけで、Python側の \n がHTML上でも改行として表示されます。 -->
+            </section>
+            {% endfor %}
+        {% else %}
+            <p class="empty-message">
+                まだ保存された呪文はありません。
+            </p>
+        {% endif %}
+
+    </main>
+</body>
+
+</html>
