@@ -260,6 +260,11 @@ h1 {
         "Hiragino Kaku Gothic ProN",
         sans-serif;
 }
+.loading {
+    display: none;
+    margin-top: 20px;
+    font-size: 18px;
+}
 /* =========================
    ページ全体 呪文が出た
 ========================= */
@@ -965,6 +970,11 @@ h1 {
         width: 100%;
 
         padding: 15px 20px;
+    }
+    .welcome-card {
+        background-image: url(../images/hog2.jpg);
+        background-size: cover;
+        background-attachment: fixed;
     }
 }
 

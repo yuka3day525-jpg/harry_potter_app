@@ -6,27 +6,64 @@
     <title>Learning English with Harry Potter</title>
     <link rel="stylesheet" href="{{url_for('static',filename='css/style.css')}}">
 </head>
+
 <body class="top-page">
+
     <header>
-    <nav>
-        <ul>
-        <a class="history-link" href="{{ url_for('history') }}">
-        📖 保存した呪文の履歴を見る
-        </a>
-        </ul>
-    </nav>
+        <nav>
+            <ul>
+                <a class="history-link" href="{{ url_for('history') }}">
+                    📖 保存した呪文の履歴を見る
+                </a>
+            </ul>
+        </nav>
     </header>
+
     <main class="top-container">
         <section class="welcome-card">
+
             <p class="subtitle">Harry Potter × English</p>
+
             <h1>ハリーポッターシリーズの呪文で学ぶ英語</h1>
-            <p class="description"> 呪文をひとつ選んで、魔法と一緒に英単語を学ぼう。 </p>
-            <form class="spell-form" action="{{ url_for('work1_kekka') }}" method="post">
+
+            <p class="description">
+                呪文をひとつ選んで、魔法と一緒に英単語を学ぼう。
+            </p>
+
+            <form
+                class="spell-form"
+                id="spell-form"
+                action="{{ url_for('work1_kekka') }}"
+                method="post"
+            >
+
                 <label for="username">あなたの名前</label>
-                <input type="text" name="username" id="username">
-                <button type="submit">呪文を出す</button>
-            </form>           
+
+                <input
+                    type="text"
+                    name="username"
+                    id="username"
+                >
+
+                <button
+                    type="submit"
+                    id="spell-button"
+                >
+                    呪文を出す
+                </button>
+
+            </form>
+
+            <!-- JSで表示・非表示を切り替える -->
+            <div id="loading" class="loading">
+                🪄 呪文を準備しています...
+            </div>
+
         </section>
     </main>
+
+    <!-- JavaScript -->
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+
 </body>
 </html>
