@@ -883,6 +883,9 @@ h1 {
     .spell-form input {
         width: 100%;
     }
+    .top-page ul{
+        padding-inline-start: 0px;
+    }
 
 /* 履歴ページ */
     .history-container {
@@ -893,7 +896,7 @@ h1 {
 
     .history-container > h1 {
         font-size: 32px;
-
+        margin-bottom: 10px;
         letter-spacing: 2px;
     }
 
@@ -912,6 +915,7 @@ h1 {
     .spell-section p {
         font-size: 14px;
     }
+
     /* 呪文が出た画面 */
     .result-container {
         width: 90vw;
@@ -933,8 +937,8 @@ h1 {
         right: 45px;
         top: 20px;
 
-        width: 150px;
-        height: 200px;
+        width: 80px;
+        height: 100px;
     }
 
     .spell-name {
