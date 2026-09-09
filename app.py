@@ -4,7 +4,7 @@ from deep_translator import GoogleTranslator
 import json
 import re #単語を抜き出すのに使う
 import nltk #nltk:単語を原型にするのに使う↓
-# nltk.download("wordnet")#←初回のみ使います
+nltk.download("wordnet")#←初回のみ使います
 from nltk.stem import WordNetLemmatizer
 from flask import Flask,render_template,request,url_for,redirect,send_file
 from sqlite3 import connect,Row
