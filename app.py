@@ -45,77 +45,162 @@ app = Flask(__name__)
 def index():
     return render_template("index.html") 
 
-@app.route("/work1_kekka",methods=["POST"])#データの送信: URLではなく、リクエストの本体（ボディ）にデータを入れて送信します。フォームから入力してもらったらPOSTがないとエラーに
+@app.route("/work1_kekka", methods=["POST"])
 def work1_kekka():
     namae = request.form.get("username")
-    #呪文取得～日本語取得
-    while True:
-        url="https://hp-api.onrender.com/api/spells"
-        res = requests.get(url,timeout=12)#whileをあとにしたい
-        kekka = json.loads(res.text)
-        maguru=random.randint(1,len(kekka)-1)
-        name=kekka[maguru]["name"]
-        description=kekka[maguru]["description"]
-        if maguru==23:
-            description =  "The Patronus Charm is a powerful projection of hope and happiness that drives away Dementors; a corpeal Patronus takes the the respective animal form of the caster, while a non-corpeal appears as a wisp of light. "
-            honyaku = "「守護霊の呪文（パトローナス・チャーム）」は、吸魂鬼（ディメンター）を追い払う、希望と幸福の強力な具現化です。実体を持つ守護霊は術者固有の動物の姿をとりますが、実体を持たない守護霊は光の筋のような姿で現れます。"
-            name = "Expecto patronum"
-            break
-        else:
-            try:
-                honyaku = GoogleTranslator(
+
+    # ==========================================
+    # 1. 呪文APIからデータ取得（1回だけ）
+    # ==========================================
+    try:
+        url = "https://hp-api.onrender.com/api/spells"
+
+        res = requests.get(url, timeout=(5, 10))
+        res.raise_for_status()
+
+        kekka = res.json()
+
+        if not kekka:
+            return "呪文データが取得できませんでした。", 503
+
+    except (requests.RequestException, ValueError) as e:
+        app.logger.warning("呪文APIの取得に失敗: %s", e)
+        return "呪文データの取得に失敗しました。時間をおいて再度お試しください。", 503
+
+    # ==========================================
+    # 2. ランダムに呪文を選ぶ
+    # ==========================================
+    spell = random.choice(kekka)
+
+    name = spell["name"]
+    description = spell["description"]
+
+    # ==========================================
+    # 3. 日本語翻訳
+    # ==========================================
+    if name.lower() == "expecto patronum":
+
+        description = (
+            "The Patronus Charm is a powerful projection of hope and "
+            "happiness that drives away Dementors; a corporeal Patronus "
+            "takes the respective animal form of the caster, while a "
+            "non-corporeal appears as a wisp of light."
+        )
+
+        honyaku = (
+            "「守護霊の呪文（パトローナス・チャーム）」は、"
+            "吸魂鬼（ディメンター）を追い払う、希望と幸福の強力な具現化です。"
+            "実体を持つ守護霊は術者固有の動物の姿をとりますが、"
+            "実体を持たない守護霊は光の筋のような姿で現れます。"
+        )
+
+    else:
+        try:
+            honyaku = GoogleTranslator(
                 source="en",
                 target="ja"
-                ).translate(description)
-                if honyaku =="":
-                    continue
-                break
-            except:
-                continue
+            ).translate(description)
 
+            if not honyaku:
+                honyaku = "日本語訳を取得できませんでした。"
 
-    stop_words = {"that","this","with","from","into","your","they","them","have",
-    "been","will","were","when","where","which","what","from"}
-    # 英単語だけ取り出す
-    kotoba = re.findall(r"[a-zA-Z]+",description)
-    # 重複削除
-    kotoba = list(dict.fromkeys(kotoba))
-    #小文字に
-    words=[word.lower() for word in kotoba]
-    #4文字以上のみにと簡単な言葉除外
-    words = [word for word in words if len(word) >= 4
-                and word not in stop_words]
+        except Exception as e:
+            app.logger.warning("翻訳に失敗: %s", e)
+            honyaku = "日本語訳を取得できませんでした。"
 
-    result = ""
-    #単語を原型にする処理
-    for word in words:
-        lemmatizer = WordNetLemmatizer()
-        base_list=[
-        word,
-        lemmatizer.lemmatize(word, pos="v"),
-        lemmatizer.lemmatize(word, pos="n"),
-        lemmatizer.lemmatize(word, pos="a")]
-        #原型にした単語の意味を調べる処理
-        for base_word in base_list:
+    # ==========================================
+    # 4. 英単語を抽出
+    # ==========================================
+    stop_words = {
+        "that", "this", "with", "from", "into",
+        "your", "they", "them", "have", "been",
+        "will", "were", "when", "where",
+        "which", "what"
+    }
+
+    kotoba = re.findall(r"[a-zA-Z]+", description)
+
+    # 小文字にして重複を削除
+    words = list(dict.fromkeys(
+        word.lower() for word in kotoba
+    ))
+
+    # 4文字以上・除外単語以外
+    words = [
+        word for word in words
+        if len(word) >= 4 and word not in stop_words
+    ]
+
+    # ==========================================
+    # 5. 原形化して辞書APIで意味を取得
+    # ==========================================
+    lemmatizer = WordNetLemmatizer()
+
+    result_lines = []
+
+    # API通信に時間がかかりすぎないよう、最大8単語
+    MAX_WORDS = 8
+
+    for word in words[:MAX_WORDS]:
+
+        # 動詞・名詞・形容詞として原形化
+        base_list = [
+            lemmatizer.lemmatize(word, pos="v"),
+            lemmatizer.lemmatize(word, pos="n"),
+            lemmatizer.lemmatize(word, pos="a"),
+            word
+        ]
+
+        # 同じ原形を重複して調べない
+        base_list = list(dict.fromkeys(base_list))
+
+        jp = None
+
+        # 1単語につき最大2回だけ問い合わせる
+        for base_word in base_list[:2]:
+
             try:
-                url = (
-                    "https://api.excelapi.org/dictionary/enja?word="+ base_word)
-                res = requests.get(url,timeout=12)
-                if res.text == "":
+                url = "https://api.excelapi.org/dictionary/enja"
+
+                res = requests.get(
+                    url,
+                    params={"word": base_word},
+                    timeout=(3, 4)
+                )
+
+                res.raise_for_status()
+
+                if not res.text.strip():
                     continue
-                txt = res.text.split("/")
-                jp=txt[0]
-                break
-            except:
+
+                jp = res.text.split("/")[0].strip()
+
+                if jp:
+                    break
+
+            except requests.RequestException as e:
+                app.logger.warning(
+                    "辞書APIの取得に失敗 (%s): %s",
+                    base_word,
+                    e
+                )
                 continue
-        try:
-            result += f"{word} ： {jp}\n"
-        except:
-            continue
-        
-        
-    return render_template("work1_kekka.html",val=[namae,name,description,honyaku,result],
-                           spell_type=name)
+
+        if jp:
+            result_lines.append(f"{word} ： {jp}")
+        else:
+            result_lines.append(f"{word} ： 意味を取得できませんでした")
+
+    result = "\n".join(result_lines)
+
+    # ==========================================
+    # 6. 結果画面
+    # ==========================================
+    return render_template(
+        "work1_kekka.html",
+        val=[namae, name, description, honyaku, result],
+        spell_type=name
+    )
 
 # ==========================================
 # 呪文をDBへ保存
