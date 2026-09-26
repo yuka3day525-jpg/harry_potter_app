@@ -1,6 +1,7 @@
 import random
 import requests
-from deep_translator import GoogleTranslator
+from google import genai
+from google.genai import types
 import json
 import re #単語を抜き出すのに使う
 import nltk #nltk:単語を原型にするのに使う↓
@@ -40,6 +41,11 @@ def init_db():
 
 #型を作る
 app = Flask(__name__)
+
+client = genai.Client(
+    api_key=os.environ.get("GEMINI_API_KEY"),
+    http_options=types.HttpOptions(timeout=30000)
+)
 
 @app.route("/")
 def index():
@@ -96,18 +102,23 @@ def work1_kekka():
 
     else:
         try:
-            honyaku = GoogleTranslator(
-                source="en",
-                target="ja"
-            ).translate(description)
+            response = client.models.generate_content(
+                model="gemini-3.6-flash",
+                contents=(
+                    "次の英語の文章を自然な日本語に翻訳してください。"
+                    "翻訳文だけを出力してください。\n\n"
+                    + description
+                )
+            )
+
+            honyaku = response.text
 
             if not honyaku:
                 honyaku = "日本語訳を取得できませんでした。"
 
         except Exception as e:
-            app.logger.warning("翻訳に失敗: %s", e)
+            app.logger.warning("Gemini翻訳に失敗: %s", e)
             honyaku = "日本語訳を取得できませんでした。"
-
     # ==========================================
     # 4. 英単語を抽出
     # ==========================================
